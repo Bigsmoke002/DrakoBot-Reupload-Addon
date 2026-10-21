@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bot Configuration</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Bot Configuration</h1>
+      <div class="button-group">
+        <a href="/logs" class="btn">View Logs</a>
+        <a href="/anonymous" class="btn">Anonymous Upload Portal</a>
+        <a href="/pending-uploads" class="btn">Pending Uploads</a>
+      </div>
+    </header>
+    <form action="/save-config" method="POST">
+      <section class="section">
+        <h2>Lockdown Settings</h2>
+        <div class="form-group lockdown-group">
+          <label class="red-toggle">
+            <input type="checkbox" name="totalLockdown" <% if (config.totalLockdown) { %>checked<% } %> >
+            <span class="lockdown-text">Total Lockdown (delete ALL messages)</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="partialLockdown" <% if (config.partialLockdown) { %>checked<% } %> >
+            Partial Lockdown (delete messages containing links/files; plain text allowed)
+          </label>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Reupload Settings</h2>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="enabled" <% if (config.reupload && config.reupload.enabled) { %>checked<% } %> >
+            Enable Reupload
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="links" <% if (config.reupload && config.reupload.types && config.reupload.types.links) { %>checked<% } %> >
+            Reupload Links
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="images" <% if (config.reupload && config.reupload.types && config.reupload.types.images) { %>checked<% } %> >
+            Reupload Images
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="gifs" <% if (config.reupload && config.reupload.types && config.reupload.types.gifs) { %>checked<% } %> >
+            Reupload GIFs
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="files" <% if (config.reupload && config.reupload.types && config.reupload.types.files) { %>checked<% } %> >
+            Reupload Files
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Custom File Types (e.g., ".pdf,.docx"): 
+            <input type="text" name="custom" value="<%= config.reupload && config.reupload.types ? config.reupload.types.custom : '' %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="spamProtection" <% if (config.reupload && config.reupload.spamProtection && config.reupload.spamProtection.enabled) { %>checked<% } %> >
+            Enable Spam Protection
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Spam Interval (seconds):
+            <input type="number" name="interval" value="<%= config.reupload && config.reupload.spamProtection ? config.reupload.spamProtection.interval : 10 %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="includeUploaderTag" <% if (config.reupload && config.reupload.includeUploaderTag) { %>checked<% } %> >
+            Show Uploader Tag
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Max File Size for Reupload (MB):
+            <input type="number" name="maxFileSizeMB" value="<%= config.reupload && config.reupload.maxFileSizeMB ? config.reupload.maxFileSizeMB : 8 %>">
+          </label>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Anonymous Upload Settings</h2>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="anonEnabled" <% if (config.anonymousUpload && config.anonymousUpload.enabled) { %>checked<% } %> >
+            Enable Anonymous Uploads
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Manual Approval:
+            <input type="checkbox" name="manualApproval" <% if (config.anonymousUpload && config.anonymousUpload.manualApproval) { %>checked<% } %> >
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Max File Size (MB):
+            <input type="number" name="maxUploadSizeMB" value="<%= config.anonymousUpload && config.anonymousUpload.maxUploadSizeMB ? config.anonymousUpload.maxUploadSizeMB : 10 %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Upload Directory:
+            <input type="text" name="uploadDirectory" value="<%= config.anonymousUpload && config.anonymousUpload.uploadDirectory ? config.anonymousUpload.uploadDirectory : 'anonymous_uploads' %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Post Channel for Images:
+            <input type="text" name="postChannelImages" value="<%= config.anonymousUpload && config.anonymousUpload.postChannels ? config.anonymousUpload.postChannels.images : '' %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Post Channel for Links:
+            <input type="text" name="postChannelLinks" value="<%= config.anonymousUpload && config.anonymousUpload.postChannels ? config.anonymousUpload.postChannels.links : '' %>">
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            Post Channel for Files:
+            <input type="text" name="postChannelFiles" value="<%= config.anonymousUpload && config.anonymousUpload.postChannels ? config.anonymousUpload.postChannels.files : '' %>">
+          </label>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>Discord Settings</h2>
+        <div class="form-group">
+          <label>
+            Guild ID:
+            <input type="text" name="discordGuildId" value="<%= config.discord ? config.discord.guildId : '' %>">
+          </label>
+        </div>
+        <% if (maxUploadSize) { %>
+          <div class="info">
+            Current max file size based on Boost status: <strong><%= maxUploadSize %> MB</strong>
+          </div>
+        <% } else { %>
+          <div class="info">
+            No valid Guild ID or Boost status unavailable.
+          </div>
+        <% } %>
+      </section>
+      
+      <div class="button-group">
+        <button type="submit">Save Configuration</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

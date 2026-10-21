@@ -1,0 +1,15 @@
+{
+    "name": "drakobot-reupload-addon",
+    "version": "1.0.0",
+    "description": "Unofficial reupload, channel lockdown and anonymous upload portal addon for Drako Bot (archived test project)",
+    "dependencies": {
+        "@discordjs/builders": "^1.7.0",
+        "axios": "^1.6.0",
+        "discord.js": "^14.14.1",
+        "ejs": "^3.1.9",
+        "express": "^4.18.2",
+        "multer": "^1.4.5-lts.1"
+    },
+    "author": "Bigsmoke002",
+    "license": "MIT"
+}

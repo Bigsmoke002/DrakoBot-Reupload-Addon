@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anonymous Upload</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Additional styles for progress bar */
+    .progress-container {
+      width: 100%;
+      background-color: #555;
+      border-radius: 4px;
+      margin-top: 15px;
+      overflow: hidden;
+      display: none;
+    }
+    .progress-bar {
+      height: 20px;
+      background-color: #d1aaff;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .progress-text {
+      text-align: center;
+      margin-top: 5px;
+    }
+    /* Modal styles for Data Privacy */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background-color: #2c2c3e;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+      color: #e0e0e0;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+  <script>
+    // Toggle file vs. link input fields
+    function toggleFields() {
+      var category = document.querySelector('input[name="uploadCategory"]:checked').value;
+      if (category === "link") {
+        document.getElementById("fileInput").style.display = "none";
+        document.getElementById("linkInputDiv").style.display = "block";
+      } else {
+        document.getElementById("fileInput").style.display = "block";
+        document.getElementById("linkInputDiv").style.display = "none";
+      }
+    }
+    window.addEventListener("DOMContentLoaded", function() {
+      toggleFields();
+      var radios = document.querySelectorAll('input[name="uploadCategory"]');
+      radios.forEach(radio => {
+        radio.addEventListener('change', toggleFields);
+      });
+    });
+    
+    // AJAX form submission with progress reporting
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("uploadForm");
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", form.action, true);
+        
+        const progressContainer = document.getElementById("progressContainer");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        progressContainer.style.display = "block";
+        
+        xhr.upload.onprogress = function(e) {
+          if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            progressBar.style.width = percentComplete + "%";
+            progressText.innerText = Math.floor(percentComplete) + "% uploaded";
+          }
+        };
+        
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            alert("Upload complete: " + xhr.responseText);
+            progressBar.style.width = "0%";
+            progressText.innerText = "";
+            form.reset();
+            toggleFields();
+          } else {
+            alert("Upload error: " + xhr.status + " - " + xhr.responseText);
+          }
+        };
+        
+        xhr.onerror = function() {
+          alert("Upload failed due to an error.");
+        };
+        
+        xhr.send(formData);
+      });
+    });
+    
+    // Data Privacy Modal logic
+    function openPrivacyModal() {
+      document.getElementById("privacyModal").style.display = "block";
+    }
+    function closePrivacyModal() {
+      document.getElementById("privacyModal").style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target == document.getElementById("privacyModal")) {
+        closePrivacyModal();
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Anonymous Upload</h1>
+    </header>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>Select Upload Type:</label>
+        <div>
+          <label>
+            <input type="radio" name="uploadCategory" value="file" checked> File Upload
+          </label>
+          <label>
+            <input type="radio" name="uploadCategory" value="link"> Link Upload
+          </label>
+        </div>
+      </div>
+      <div class="form-group" id="fileInput">
+        <label>Select file (e.g., images, GIFs, EXE, etc.):</label>
+        <input type="file" name="file" accept="*/*">
+      </div>
+      <div class="form-group" id="linkInputDiv" style="display: none;">
+        <label>Enter HTTPS link:</label>
+        <input type="text" name="linkInput" placeholder="https://example.com/file">
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" name="disclaimer" required>
+          I confirm that I do not upload illegal or copyrighted content.
+        </label>
+      </div>
+      <button type="submit" class="btn">Upload</button>
+    </form>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText"></div>
+    <div class="info">
+      <p>Please note: All uploads are processed and then converted into Discord posts. Only file uploads and links are allowed.</p>
+    </div>
+    <div class="button-group">
+      <button type="button" class="btn" onclick="openPrivacyModal()">Data Privacy</button>
+    </div>
+  </div>
+  
+  <!-- Data Privacy Modal -->
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closePrivacyModal()">&times;</span>
+      <h2>Data Privacy</h2>
+      <p>No additional information about your upload is stored. Only your IP address is logged as part of general server access logs.</p>
+      <p>By uploading, you agree to these terms.</p>
+    </div>
+  </div>
+</body>
+</html>

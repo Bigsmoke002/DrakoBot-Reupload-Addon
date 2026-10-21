@@ -1,0 +1,11 @@
+node_modules/
+config.json
+*.db
+logs/
+database/
+config/
+pendingUploads/
+approvedUploads/
+reupload_log.json
+*.log
+.env

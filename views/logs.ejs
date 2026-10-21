@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reupload Logs</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reupload Logs</h1>
+      <div class="button-group">
+        <a href="/download-logs" class="btn">Download Logs</a>
+        <a href="/" class="btn">Dashboard</a>
+      </div>
+    </header>
+    <% if (logs.length === 0) { %>
+      <p>No log entries available.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>Channel</th>
+            <th>Guild</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% logs.forEach(log => { %>
+            <tr>
+              <td><%= log.timestamp %></td>
+              <td><%= log.action %></td>
+              <td><%= log.userTag %> (ID: <%= log.userId %>)</td>
+              <td><%= log.channelId %></td>
+              <td><%= log.guildId ? log.guildId : 'DM/No Guild' %></td>
+              <td>
+                <% if (log.action === "DELETE") { %>
+                  <p>Reason: <%= log.reason || "Unknown" %></p>
+                <% } else if (log.action === "REUPLOAD") { %>
+                  <p>Attachments: <%= log.attachmentsCount %></p>
+                  <% if (log.textLinks && log.textLinks.length > 0) { %>
+                    <p>Links:</p>
+                    <ul>
+                      <% log.textLinks.forEach(l => { %>
+                        <li><%= l %></li>
+                      <% }); %>
+                    </ul>
+                  <% } %>
+                <% } %>
+                <pre><%= JSON.stringify(log, null, 2) %></pre>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</body>
+</html>

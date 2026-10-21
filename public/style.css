@@ -1,0 +1,131 @@
+body {
+  background-color: #1e1e2d;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #2c2c3e;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+header h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d1aaff;
+}
+
+.section {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: #3a3a55;
+  border-radius: 6px;
+}
+
+.section h2 {
+  margin-top: 0;
+  color: #c49cff;
+  border-bottom: 1px solid #5a5a70;
+  padding-bottom: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #2c2c3e;
+  color: #e0e0e0;
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.button-group {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #d1aaff;
+  color: #1e1e2d;
+  padding: 10px 15px;
+  margin: 5px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #bb93e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #555;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #3a3a55;
+}
+
+.info {
+  background-color: #555;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  text-align: center;
+  color: #d1aaff;
+}
+
+/* Lockdown-specific styles */
+.lockdown-group {
+  padding: 10px;
+  background-color: #4a1d1d;
+  border-radius: 4px;
+}
+
+.red-toggle {
+  color: #ff7575;
+  font-weight: bold;
+}
+
+.lockdown-text {
+  background-color: #b80d0d;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-left: 5px;
+}

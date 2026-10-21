@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Anonymous Uploads</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Pending Anonymous Uploads</h1>
+      <div class="button-group">
+        <a href="/" class="btn">Dashboard</a>
+      </div>
+    </header>
+    <section class="section">
+      <h2>Pending File Uploads</h2>
+      <% if (pendingFiles.length === 0) { %>
+        <p>No pending file uploads.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Preview</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pendingFiles.forEach(file => { %>
+              <tr>
+                <td><%= file %></td>
+                <td><a href="/pendingFiles/<%= file %>" target="_blank">View File</a></td>
+                <td>
+                  <form action="/admin/approve" method="POST" style="display:inline;">
+                    <input type="hidden" name="filename" value="<%= file %>">
+                    <button type="submit" class="btn">Approve</button>
+                  </form>
+                  <form action="/admin/delete" method="POST" style="display:inline;">
+                    <input type="hidden" name="filename" value="<%= file %>">
+                    <button type="submit" class="btn" style="background-color: #ff6b6b;">Reject</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+    <section class="section">
+      <h2>Pending Link Uploads</h2>
+      <% if (pendingLinks.length === 0) { %>
+        <p>No pending link uploads.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Link</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pendingLinks.forEach(linkObj => { %>
+              <tr>
+                <td><%= linkObj.timestamp %></td>
+                <td><a href="<%= linkObj.link %>" target="_blank"><%= linkObj.link %></a></td>
+                <td>
+                  <form action="/admin/approve-link" method="POST" style="display:inline;">
+                    <input type="hidden" name="timestamp" value="<%= linkObj.timestamp %>">
+                    <button type="submit" class="btn">Approve</button>
+                  </form>
+                  <form action="/admin/delete-link" method="POST" style="display:inline;">
+                    <input type="hidden" name="timestamp" value="<%= linkObj.timestamp %>">
+                    <button type="submit" class="btn" style="background-color: #ff6b6b;">Reject</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+  </div>
+</body>
+</html>

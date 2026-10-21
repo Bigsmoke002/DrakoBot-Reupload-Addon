@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pending Anonymous Uploads</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .preview-image {
+      max-width: 150px;
+      max-height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Pending Anonymous Uploads</h1>
+      <div class="button-group">
+        <a href="/" class="btn">Dashboard</a>
+      </div>
+    </header>
+    
+    <section class="section">
+      <h2>Pending Links</h2>
+      <% if (pendingLinks.length === 0) { %>
+        <p>No pending links.</p>
+      <% } else { %>
+        <ul>
+          <% pendingLinks.forEach(linkItem => { %>
+            <li>
+              <a href="<%= linkItem.link %>" target="_blank"><%= linkItem.link %></a>
+              <form action="/pending/approve" method="POST" style="display:inline;">
+                <input type="hidden" name="type" value="link">
+                <input type="hidden" name="filename" value="<%= linkItem.link %>">
+                <button type="submit" class="btn">Approve</button>
+              </form>
+              <form action="/pending/delete" method="POST" style="display:inline;">
+                <input type="hidden" name="type" value="link">
+                <input type="hidden" name="filename" value="<%= linkItem.link %>">
+                <button type="submit" class="btn" style="background-color: #ff6b6b;">Delete</button>
+              </form>
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+    
+    <section class="section">
+      <h2>Pending Files</h2>
+      <% if (pendingFiles.length === 0) { %>
+        <p>No pending files.</p>
+      <% } else { %>
+        <ul>
+          <% pendingFiles.forEach(file => { %>
+            <li>
+              <% 
+                const ext = file.split('.').pop().toLowerCase();
+                const imageExts = ['png', 'jpg', 'jpeg', 'bmp', 'gif'];
+              %>
+              <% if (imageExts.includes(ext)) { %>
+                <img src="/pendingUploads/<%= file %>" alt="<%= file %>" class="preview-image">
+              <% } else { %>
+                <a href="/pendingUploads/<%= file %>" target="_blank"><%= file %></a>
+              <% } %>
+              <form action="/pending/approve" method="POST" style="display:inline;">
+                <input type="hidden" name="type" value="file">
+                <input type="hidden" name="filename" value="<%= file %>">
+                <button type="submit" class="btn">Approve</button>
+              </form>
+              <form action="/pending/delete" method="POST" style="display:inline;">
+                <input type="hidden" name="type" value="file">
+                <input type="hidden" name="filename" value="<%= file %>">
+                <button type="submit" class="btn" style="background-color: #ff6b6b;">Delete</button>
+              </form>
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+  </div>
+</body>
+</html>

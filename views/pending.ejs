@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Ausstehende Uploads</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Ausstehende Uploads</h1>
+      <div class="button-group">
+        <a href="/" class="btn">Zurück zum Upload</a>
+      </div>
+    </header>
+    <% if (files.length === 0) { %>
+      <p>Keine ausstehenden Uploads vorhanden.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Dateiname</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% files.forEach(file => { %>
+            <tr>
+              <td><%= file %></td>
+              <td>
+                <form action="/admin/approve" method="POST" style="display:inline;">
+                  <input type="hidden" name="filename" value="<%= file %>">
+                  <button type="submit" class="btn">Freigeben</button>
+                </form>
+                <form action="/admin/delete" method="POST" style="display:inline;">
+                  <input type="hidden" name="filename" value="<%= file %>">
+                  <button type="submit" class="btn" style="background-color: #ff6b6b;">Löschen</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</body>
+</html>
